@@ -27,5 +27,15 @@ public class FPS_Display : MonoBehaviour {
         string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
         GUI.Label(rect, text, style);
 
-    }
+		GUIStyle style2 = new GUIStyle();
+		GUIContent box2 = new GUIContent();
+
+		style2.alignment = TextAnchor.UpperLeft;
+		style2.fontSize = h * 2 / 100;
+		style2.normal.textColor = new Color(1, 1, 1, 1.0f);
+
+		float tScale = Time.timeScale;
+		string text2 = "Timescale: "+tScale;
+		GUI.Label(rect, text2, style2);
+	}
 }

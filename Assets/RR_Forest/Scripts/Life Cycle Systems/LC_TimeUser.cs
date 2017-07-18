@@ -33,17 +33,20 @@ public class LC_TimeUser : MonoBehaviour {
 		timeController.OnTimerInterval += OnTimeControllerInterval;
 		if(randomizeLifeTime)
 		{
-			lifeTimeScale = (float)System.Math.Round(Random.Range(0.5f, 2f),2);
-			ageingSpeed = (float)System.Math.Round(Random.Range(0.75f, 1.5f),2);
+			lifeTimeScale = (float)System.Math.Round(Random.Range(0.5f, 2.5f),2);
+			ageingSpeed = (float)System.Math.Round(Random.Range(0.5f, 2.5f),2);
+			maxLifeTime = (float)System.Math.Round(Random.Range(400f, 1000f), 2);
 		}
 	}
-
+	void OnDisable()
+	{
+		timeController.OnTimerInterval -= OnTimeControllerInterval;
+	}
 	void Update()
 	{
 		if(shouldBeAgeing)
 		{
-			if (currentLifeTime >= maxLifeTime)
-				shouldBeAgeing = false;
+			
 			lifeTimeTimer += Time.deltaTime*ageingSpeed;
 			currentLifeTime = Mathf.Lerp(previousLifeTime, toLifeTimeValue, lifeTimeTimer);
 			if (currentLifeTime == toLifeTimeValue)
@@ -58,6 +61,14 @@ public class LC_TimeUser : MonoBehaviour {
 	}
 	private void OnTimeControllerInterval()
 	{
+		if (currentLifeTime >= maxLifeTime)
+		{
+			currentLifeTime = maxLifeTime;
+			if (GetComponent<LC_Scaler>())
+				GetComponent<LC_Scaler>().StartScaling();
+			shouldBeAgeing = false;
+			return;
+		}
 		toLifeTimeValue += (timeController.timerInterval * lifeTimeScale);
 		previousLifeTime = currentLifeTime;
 		shouldBeAgeing = true;

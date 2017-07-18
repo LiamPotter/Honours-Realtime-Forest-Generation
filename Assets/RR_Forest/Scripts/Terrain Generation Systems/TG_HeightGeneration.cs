@@ -7,6 +7,8 @@ using LibNoise.Operator;
 
 public class TG_HeightGeneration : MonoBehaviour {
 
+	public bool DebugOnClick;
+
 	[SerializeField]
 	float frequency = 0.006f;
 	[SerializeField]
@@ -29,7 +31,7 @@ public class TG_HeightGeneration : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0)&& DebugOnClick)
 			Generate();
 	}
 	void Generate()

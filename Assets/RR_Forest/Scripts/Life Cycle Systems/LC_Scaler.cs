@@ -13,7 +13,7 @@ public class LC_Scaler : MonoBehaviour {
 
 	public Vector3 initialScale = new Vector3(0.1f,0.1f,0.1f); //The user's initial scale, when they first get placed
 
-	[Range(0.01f,4f)]
+	//[Range(0.01f,4f)]
 	public float scaleSpeed=1; //How fast the user should scale to it's wanted scale;
 
 	public Vector3 currentScale; //The user's currently used scale
@@ -36,28 +36,38 @@ public class LC_Scaler : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		if(shouldScale)
+		if (shouldScale)
 		{
-			scaleTimer += Time.deltaTime * scaleSpeed;
-			currentScale = Vector3.Lerp(previousScale, wantedScale,scaleTimer);
+			//scaleSpeed = Mathf.Abs(Mathf.Tan(timeUser.ageingSpeed+timeUser.lifeTimeScale));
+
+			//scaleTimer += Time.deltaTime*scaleSpeed ;
+			//currentScale = Vector3.Lerp(previousScale, wantedScale, scaleTimer);
+			currentScale = Vector3.Lerp(currentScale, wantedScale, Time.deltaTime * scaleSpeed);
 			transform.localScale = currentScale;
-			if (currentScale== wantedScale)
+			if (currentScale == wantedScale)
 			{
 				scaleTimer = 0;
 				shouldScale = false;
 			}
 		}
+		//else wantedScale = new Vector3();
 	}
 	public void StartScaling()
 	{
 		if (currentScale.magnitude >= maxScale.magnitude)
+		{
+			currentScale = maxScale;
 			return;
+		}
 		previousScale = currentScale;
-		float x = 0, y = 0, z = 0;
-		x = Mathf.Clamp((maxScale.x * timeUser.agePercentage) * scaleWeight.x, initialScale.x, maxScale.x);
-		y = Mathf.Clamp((maxScale.y * timeUser.agePercentage) * scaleWeight.y, initialScale.y, maxScale.y);
-		z = Mathf.Clamp((maxScale.z * timeUser.agePercentage) * scaleWeight.z, initialScale.z, maxScale.z);
-		wantedScale += new Vector3(x,y,z);
+		float x = 0, y = 0, z =0;
+		//x = Mathf.Clamp((maxScale.x * timeUser.agePercentage), initialScale.x, maxScale.x);
+		//y = Mathf.Clamp((maxScale.y * timeUser.agePercentage), initialScale.y, maxScale.y);
+		//z = Mathf.Clamp((maxScale.z * timeUser.agePercentage), initialScale.z, maxScale.z);
+		x = maxScale.x * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
+		y = maxScale.y * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
+		z = maxScale.z * Mathf.Clamp(timeUser.agePercentage, 0.1f, 1f);
+		wantedScale = new Vector3(x,y,z);
 		shouldScale = true;
 	}
 }
