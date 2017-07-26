@@ -67,6 +67,7 @@ public class LC_TimeUser : MonoBehaviour {
 			if (GetComponent<LC_Scaler>())
 				GetComponent<LC_Scaler>().StartScaling();
 			shouldBeAgeing = false;
+			enabled = false;
 			return;
 		}
 		toLifeTimeValue += (timeController.timerInterval * lifeTimeScale);

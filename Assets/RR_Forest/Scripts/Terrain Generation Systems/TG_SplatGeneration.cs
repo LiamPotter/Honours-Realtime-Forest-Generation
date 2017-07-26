@@ -12,7 +12,7 @@ public class TG_SplatGeneration : MonoBehaviour {
 	private float blendScale;
 	[Range(0,10)]
 	public float splatHeight;
-	// Use this for initialization
+
 	void Start () {
 		terrainData = theTerrain.terrainData;
 		if (!GetComponent<TG_HeightGeneration>().enabled)

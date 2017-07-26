@@ -57,13 +57,12 @@ public class LC_Scaler : MonoBehaviour {
 		if (currentScale.magnitude >= maxScale.magnitude)
 		{
 			currentScale = maxScale;
+			enabled = false;
 			return;
 		}
 		previousScale = currentScale;
 		float x = 0, y = 0, z =0;
-		//x = Mathf.Clamp((maxScale.x * timeUser.agePercentage), initialScale.x, maxScale.x);
-		//y = Mathf.Clamp((maxScale.y * timeUser.agePercentage), initialScale.y, maxScale.y);
-		//z = Mathf.Clamp((maxScale.z * timeUser.agePercentage), initialScale.z, maxScale.z);
+
 		x = maxScale.x * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
 		y = maxScale.y * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
 		z = maxScale.z * Mathf.Clamp(timeUser.agePercentage, 0.1f, 1f);
