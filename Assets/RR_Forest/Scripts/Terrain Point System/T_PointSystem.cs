@@ -29,6 +29,8 @@ public class T_PointSystem : MonoBehaviour {
 		//PlacePoissonPoints(TreeMinimumDistance, TreePrefabs,Vector3.zero);
 		//PlacePoissonPoints(GrassMiniumumDistance, GrassPrefabs,grassOffset,100,100);
 		//Debug.Log(Points.Count);
+		if (GetComponent<TG_HeightGeneration>().enabled == false)
+			DoneSplatPlacement();
 	}
 	
 	private void GrabTerrainData()
@@ -91,10 +93,12 @@ public class T_PointSystem : MonoBehaviour {
 		{
 
 			tPosition = GetActualTerrainHeight(Points[i].vectorPosition, out tHit, out rayDirection);
-			instObject = Instantiate(GrabRandomFromList(prefabsToSpawn), tPosition + offset, Quaternion.identity, transform);
-			Vector3 eTest = SetPointRotation(tHit, rayDirection, instObject.transform.rotation.eulerAngles);
-			Quaternion euler = Quaternion.Euler(eTest.x, eTest.y, eTest.z);
-
+			if (CanPlaceOnSplat(tHit.point))
+			{
+				instObject = Instantiate(GrabRandomFromList(prefabsToSpawn), tPosition + offset, Quaternion.identity, transform);
+				Vector3 eTest = SetPointRotation(tHit, rayDirection, instObject.transform.rotation.eulerAngles);
+				Quaternion euler = Quaternion.Euler(eTest.x, eTest.y, eTest.z);
+			}
 			//instObject.transform.up = tHit.normal;
 			
 			//instObject.transform.up = tHit.normal+new Vector3(0,Random.Range(0,360),0);
@@ -134,7 +138,7 @@ public class T_PointSystem : MonoBehaviour {
 	{
 		RaycastHit hit;
 		Ray tRay = new Ray(initPos+(Vector3.up*10), Vector3.down);
-		if(Physics.Raycast(tRay,out hit,200f,terrainLayerMask.value))
+		if(Physics.Raycast(tRay,out hit,2000f,terrainLayerMask.value))
 		{
 			rayHit = hit;
 			rayDirection = tRay.direction;
@@ -155,6 +159,62 @@ public class T_PointSystem : MonoBehaviour {
 		Debug.Log("Done Splat Placement, starting poisson placement");
 		PlacePoissonPoints(TreeMinimumDistance, TreePrefabs, Vector3.zero);
 	}
+	private bool CanPlaceOnSplat(Vector3 point)
+	{
+		int surfaceIndex = GetMainTexture(point);
+		string surfaceTexture = retrievedTerrainData.splatPrototypes[surfaceIndex].texture.name;
+
+		if (surfaceTexture.Contains("snow"))
+			return false;
+		else return true;
+	}
+	private float[] GetTextureMix(Vector3 WorldPos)
+	{
+		// returns an array containing the relative mix of textures
+		// on the main terrain at this world position.
+
+		// The number of values in the array will equal the number
+		// of textures added to the terrain.
+
+		// calculate which splat map cell the worldPos falls within (ignoring y)
+		int mapX = (int)(((WorldPos.x - WantedTerrain.transform.position.x) / retrievedTerrainData.size.x) 
+			* retrievedTerrainData.alphamapWidth);
+		int mapZ = (int)(((WorldPos.z - WantedTerrain.transform.position.z) / retrievedTerrainData.size.z) 
+			* retrievedTerrainData.alphamapHeight);
+
+		// get the splat data for this cell as a 1x1xN 3d array (where N = number of textures)
+		float[,,] splatmapData = retrievedTerrainData.GetAlphamaps(mapX, mapZ, 1, 1);
+
+		// extract the 3D array data to a 1D array:
+		float[] cellMix = new float[splatmapData.GetUpperBound(2) + 1];
+
+		for (int n = 0; n < cellMix.Length; n++)
+		{
+			cellMix[n] = splatmapData[0, 0, n];
+		}
+		return cellMix;
+	}
+	public int GetMainTexture(Vector3 WorldPos)
+	{
+		// returns the zero-based index of the most dominant texture
+		// on the main terrain at this world position.
+		float[] mix = GetTextureMix(WorldPos);
+
+		float maxMix = 0;
+		int maxIndex = 0;
+
+		// loop through each mix value and find the maximum
+		for (int n = 0; n < mix.Length; n++)
+		{
+			if (mix[n] > maxMix)
+			{
+				maxIndex = n;
+				maxMix = mix[n];
+			}
+		}
+		return maxIndex;
+	}
+
 	//private void OnDrawGizmos()
 	//{
 	//	Gizmos.color = Color.blue;

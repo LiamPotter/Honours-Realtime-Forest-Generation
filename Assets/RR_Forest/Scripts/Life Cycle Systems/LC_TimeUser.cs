@@ -18,60 +18,62 @@ public class LC_TimeUser : MonoBehaviour {
 
 	public float agePercentage; //The value of currentLifeTime divided by maxLifeTime
 
-	private float toLifeTimeValue; //The value the user's age should be trying to reach
+	protected float toLifeTimeValue; //The value the user's age should be trying to reach
 
-	private float previousLifeTime; //The user's previous life time, gets used whenever the lifetime should change
+	protected float previousLifeTime; //The user's previous life time, gets used whenever the lifetime should change
 	[HideInInspector]
 	public bool shouldBeAgeing; //Should the user be ageing at all?
 
-	private float lifeTimeTimer; //Used to control the lerping from 'currentLifeTime' to 'toLifeTimeValue'
+	protected float lifeTimeTimer; //Used to control the lerping from 'currentLifeTime' to 'toLifeTimeValue'
 
-	private LC_TimeController timeController; //The controller that controls all ageing events
+	protected LC_Scaler scaler; //The potential scaler component that CAN use this TimeUser
 
 	void Start () {
-		timeController = LC_TimeController.instance;
-		timeController.OnTimerInterval += OnTimeControllerInterval;
+		if (GetComponent<LC_Scaler>())
+			scaler = GetComponent<LC_Scaler>();
+		//timeController.OnTimerInterval += OnTimeControllerInterval;
 		if(randomizeLifeTime)
 		{
-			lifeTimeScale = (float)System.Math.Round(Random.Range(0.5f, 2.5f),2);
-			ageingSpeed = (float)System.Math.Round(Random.Range(0.5f, 2.5f),2);
-			maxLifeTime = (float)System.Math.Round(Random.Range(400f, 1000f), 2);
+			lifeTimeScale = (float)System.Math.Round(Random.Range(0.25f, 2.5f),2);
+			ageingSpeed = (float)System.Math.Round(Random.Range(0.25f, 2.5f),2);
+			maxLifeTime = (float)System.Math.Round(Random.Range(700f, 3000f), 2);
 		}
 	}
 	void OnDisable()
 	{
-		timeController.OnTimerInterval -= OnTimeControllerInterval;
+		//timeController.OnTimerInterval -= OnTimeControllerInterval;
 	}
 	void Update()
 	{
-		if(shouldBeAgeing)
-		{
-			
-			lifeTimeTimer += Time.deltaTime*ageingSpeed;
-			currentLifeTime = Mathf.Lerp(previousLifeTime, toLifeTimeValue, lifeTimeTimer);
-			if (currentLifeTime == toLifeTimeValue)
-			{
-				if (GetComponent<LC_Scaler>())
-					GetComponent<LC_Scaler>().StartScaling();
-				agePercentage = (float)System.Math.Round(currentLifeTime / maxLifeTime, 2);
-				lifeTimeTimer = 0;
-				shouldBeAgeing = false;
-			}
-		}
+		OnTimeControllerInterval();
+		agePercentage = currentLifeTime / maxLifeTime;
+		//if (shouldBeAgeing)
+		//{
+
+		//	//lifeTimeTimer += Time.deltaTime * ageingSpeed;
+		//	//currentLifeTime = Mathf.Lerp(previousLifeTime, toLifeTimeValue, lifeTimeTimer);
+		//	//if (currentLifeTime == toLifeTimeValue)
+		//	//{
+		//		//if (scaler)
+		//		//	scaler.StartScaling();
+	
+		//		//lifeTimeTimer = 0;
+		//		//shouldBeAgeing = false;
+		//	//}
+		//}
 	}
 	private void OnTimeControllerInterval()
 	{
 		if (currentLifeTime >= maxLifeTime)
 		{
 			currentLifeTime = maxLifeTime;
-			if (GetComponent<LC_Scaler>())
-				GetComponent<LC_Scaler>().StartScaling();
 			shouldBeAgeing = false;
 			enabled = false;
 			return;
 		}
-		toLifeTimeValue += (timeController.timerInterval * lifeTimeScale);
-		previousLifeTime = currentLifeTime;
+		currentLifeTime += Time.deltaTime * ageingSpeed;
+		//previousLifeTime = currentLifeTime;
 		shouldBeAgeing = true;
+
 	}
 }

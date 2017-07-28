@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LC_TimeUser))]
 public class LC_Scaler : MonoBehaviour {
 
 	private LC_TimeUser timeUser;
@@ -31,25 +30,30 @@ public class LC_Scaler : MonoBehaviour {
 		timeUser = GetComponent<LC_TimeUser>();
 		currentScale = initialScale;
 		transform.localScale = currentScale;
-	}
+		wantedScale = currentScale;
 
+	}
 	// Update is called once per frame
 	void Update ()
 	{
-		if (shouldScale)
-		{
-			//scaleSpeed = Mathf.Abs(Mathf.Tan(timeUser.ageingSpeed+timeUser.lifeTimeScale));
+		//scaleTimer += (Time.deltaTime * scaleSpeed)*timeUser.agePercentage;
+		currentScale = Vector3.Lerp(initialScale, maxScale, timeUser.agePercentage);
+		transform.localScale = currentScale;
+		//if (shouldScale)
+		//{
+		//	//scaleSpeed = Mathf.Abs(Mathf.Tan(timeUser.ageingSpeed+timeUser.lifeTimeScale));
 
-			//scaleTimer += Time.deltaTime*scaleSpeed ;
-			//currentScale = Vector3.Lerp(previousScale, wantedScale, scaleTimer);
-			currentScale = Vector3.Lerp(currentScale, wantedScale, Time.deltaTime * scaleSpeed);
-			transform.localScale = currentScale;
-			if (currentScale == wantedScale)
-			{
-				scaleTimer = 0;
-				shouldScale = false;
-			}
-		}
+		//	//scaleTimer += Time.deltaTime*scaleSpeed ;
+		//	currentScale = Vector3.Lerp(previousScale, wantedScale, scaleTimer);
+			
+		//	//currentScale = Vector3.Lerp(currentScale, wantedScale, Time.deltaTime * scaleSpeed);
+		//	transform.localScale = currentScale;
+		//	if (currentScale == wantedScale)
+		//	{
+		//		scaleTimer = 0;
+		//		shouldScale = false;
+		//	}
+		//}
 		//else wantedScale = new Vector3();
 	}
 	public void StartScaling()
@@ -63,8 +67,8 @@ public class LC_Scaler : MonoBehaviour {
 		previousScale = currentScale;
 		float x = 0, y = 0, z =0;
 
-		x = maxScale.x * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
-		y = maxScale.y * Mathf.Clamp(timeUser.agePercentage,0.1f,1f);
+		x = maxScale.x * Mathf.Clamp(timeUser.agePercentage, 0.1f,1f);
+		y = maxScale.y * Mathf.Clamp(timeUser.agePercentage, 0.1f,1f);
 		z = maxScale.z * Mathf.Clamp(timeUser.agePercentage, 0.1f, 1f);
 		wantedScale = new Vector3(x,y,z);
 		shouldScale = true;

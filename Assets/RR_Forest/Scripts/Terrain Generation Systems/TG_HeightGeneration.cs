@@ -6,7 +6,7 @@ using LibNoise.Generator;
 using LibNoise.Operator;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
-public class TG_HeightGeneration : MonoBehaviour {
+public class TG_HeightGeneration : MonoBehaviour,IRandomBetweenHandler {
 
 	
 	public bool DebugOnClick; //should the terrain be re-generate whenever the user clicks
@@ -80,17 +80,21 @@ public class TG_HeightGeneration : MonoBehaviour {
 		if (Input.GetMouseButtonDown(0)&& DebugOnClick)
 			Generate();
 	}
+	public float GenerateBetween(float min, float max)
+	{
+		return Random.Range(min,max);
+	}
 	//the method that will be generating the heights
 	void Generate()
 	{
 		if(RandomizeValues)
 		{
-			frequency = Random.Range(baseRandomFrequency.x, baseRandomFrequency.y);
-			amplitude = Random.Range(baseRandomAmplitude.x, baseRandomAmplitude.y);
-			mountainFrec1 = Random.Range(mountain1RandomFrequency.x, mountain1RandomFrequency.y);
-			mountainAmp1 = Random.Range(mountain1RandomAmplitude.x, mountain1RandomAmplitude.y);
-			mountainFrec2 = Random.Range(mountain2RandomFrequency.x, mountain2RandomFrequency.y);
-			mountainAmp2 = Random.Range(mountain2RandomAmplitude.x, mountain2RandomAmplitude.y);
+			frequency = GenerateBetween(baseRandomFrequency.x, baseRandomFrequency.y);
+			amplitude = GenerateBetween(baseRandomAmplitude.x, baseRandomAmplitude.y);
+			mountainFrec1 = GenerateBetween(mountain1RandomFrequency.x, mountain1RandomFrequency.y);
+			mountainAmp1 = GenerateBetween(mountain1RandomAmplitude.x, mountain1RandomAmplitude.y);
+			mountainFrec2 = GenerateBetween(mountain2RandomFrequency.x, mountain2RandomFrequency.y);
+			mountainAmp2 = GenerateBetween(mountain2RandomAmplitude.x, mountain2RandomAmplitude.y);
 		}
 		int xRes = terr.terrainData.heightmapWidth; //width of the terrain heightmap
 		int zRes = terr.terrainData.heightmapHeight; //height of the terrain heightmap

@@ -3,9 +3,17 @@
   <Class Name="TG_HeightGeneration">
     <Position X="1.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AARAAAAAACAAAAAAAAAAAAAEAAAAAACgAAAAQEACIAE=</HashCode>
+      <HashCode>AIRAAABAACAAAAIABAAAAAAGAAAAAACgBAAAQEACIAE=</HashCode>
       <FileName>Assets\RR_Forest\Scripts\Terrain Generation Systems\TG_HeightGeneration.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
+  <Interface Name="IRandomBetweenHandler">
+    <Position X="4.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\RR_Forest\Scripts\HelperInterfaces\IRandomBetweenHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

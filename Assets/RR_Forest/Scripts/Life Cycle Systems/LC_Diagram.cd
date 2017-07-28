@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="LC_Scaler">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgABACEAAEAAAAAAEgAIAAAAAAAAAAAIAQAEA=</HashCode>
+      <FileName>Assets\RR_Forest\Scripts\Life Cycle Systems\LC_Scaler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LC_TimeController">
+    <Position X="0.5" Y="1" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="LC_TimeController.TimerDelegate">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\RR_Forest\Scripts\Life Cycle Systems\LC_TimeController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACCAAAAACAAAAAAAAABgAAAIAAABAAAAAEA=</HashCode>
+      <FileName>Assets\RR_Forest\Scripts\Life Cycle Systems\LC_TimeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LC_TimeUser">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAYAABAAACAAAAAAACgAAAAIAAAIAAAJACQAAEAEAAA=</HashCode>
+      <FileName>Assets\RR_Forest\Scripts\Life Cycle Systems\LC_TimeUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
